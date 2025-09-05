@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Star Wars</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('img/R.jpeg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        header {
+            /* Deixa a imagem mais visível: reduz opacidade do overlay escuro */
+            position: relative;
+        }
+        header::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.35); /* antes era mais escuro, agora mais transparente */
+            z-index: 1;
+        }
+        header .container {
+            position: relative;
+            z-index: 2;
+        }
+        .p-5 {
+            padding: 2rem !important;
+        }
+        .star-bg {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        .personagem-imgs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .personagem-imgs img {
+            width: 120px;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid #fff;
+            background: #222c;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            box-shadow: 0 0 12px #ffe81f55;
+        }
+        .personagem-imgs img:hover {
+            transform: scale(1.08) rotate(-2deg);
+            box-shadow: 0 0 32px #ffe81f99, 0 0 8px #fff;
+        }
+        .perfil-link {
+            text-decoration: none;
+            color: #ffe81f;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .perfil-link:hover {
+            color: #fff;
+            text-shadow: 0 0 8px #ffe81f, 0 0 2px #fff;
+        }
+        .filme-titulo {
+            font-weight: bold;
+            color: #ffe81f;
+            font-size: 1.1em;
+        }
+        .filme-desc {
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+        main, footer {
+            background: rgba(0,0,0,0.7);
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .nav-link.bg-highlight {
+            background: rgba(0,0,0,0.85);
+            border-radius: 8px;
+            padding: 6px 18px;
+            margin: 0 6px;
+            color: #ffe81f !important;
+            font-weight: bold;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 8px #ffe81f55;
+            position: relative;
+            overflow: visible;
+        }
+        .nav-link.bg-highlight:hover {
+            background: #ffe81f;
+            color: #222 !important;
+            box-shadow: 0 0 16px #ffe81f99, 0 0 32px #ffe81f77;
+        }
+        /* Efeito de brilho caindo ao passar o mouse */
+        .nav-link.bg-highlight .sparkle {
+            pointer-events: none;
+            position: absolute;
+            left: 50%;
+            top: -16px;
+            width: 8px;
+            height: 16px;
+            opacity: 0;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #ffe81f 0%, #fff 100%);
+            box-shadow: 0 0 12px #ffe81f, 0 0 24px #fff;
+            transform: translateX(-50%) scaleY(0.7);
+            transition: opacity 0.2s;
+            z-index: 10;
+            animation: none;
+        }
+        .nav-link.bg-highlight:hover .sparkle {
+            opacity: 1;
+            animation: sparkle-fall 0.7s linear;
+        }
+        @keyframes sparkle-fall {
+            0% {
+                top: -16px;
+                opacity: 1;
+                transform: translateX(-50%) scaleY(0.7);
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                top: 36px;
+                opacity: 0;
+                transform: translateX(-50%) scaleY(1.2);
+            }
+        }
+        .star-wars-intro {
+            font-family: 'Arial Black', Arial, sans-serif;
+            color: #ffe81f;
+            text-align: center;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            margin-top: 30px;
+            animation: intro-glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes intro-glow {
+            0% { text-shadow: 0 0 8px #ffe81f, 0 0 2px #fff; }
+            100% { text-shadow: 0 0 32px #ffe81f, 0 0 8px #fff; }
+        }
+        .btn-filme {
+            background: #ffe81f;
+            color: #222;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 18px;
+            font-weight: bold;
+            margin-left: 10px;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 8px #ffe81f55;
+        }
+        .btn-filme:hover {
+            background: #fff;
+            color: #222;
+            box-shadow: 0 0 16px #ffe81f99;
+        }
+        .lightsaber {
+            width: 180px;
+            height: 12px;
+            background: linear-gradient(90deg, #fff 0%, #ffe81f 100%);
+            border-radius: 6px;
+            margin: 0 auto 10px auto;
+            box-shadow: 0 0 24px #ffe81f, 0 0 8px #fff;
+            animation: saber-glow 1.2s infinite alternate;
+        }
+        @keyframes saber-glow {
+            0% { box-shadow: 0 0 12px #ffe81f, 0 0 4px #fff; }
+            100% { box-shadow: 0 0 32px #ffe81f, 0 0 16px #fff; }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas class="star-bg" id="star-bg"></canvas>
+    <header class="p-5" style="background: url('img/Star Wars 16 3.jpg') no-repeat center center; background-size: cover; position:relative; z-index:2;">
+        <nav class="container d-flex justify-content-between align-items-center">
+            <img src="img/logo-star-wars.png" class="nav-img" loading="lazy">
+            <ul class="nav mt-5">
+                <li class="nav-item">
+                    <a class="nav-link bg-highlight" href="#inicio">
+                        Início
+                        <span class="sparkle"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link bg-highlight" href="#personagens">
+                        Personagens
+                        <span class="sparkle"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link bg-highlight" href="#filmes">
+                        Filmes
+                        <span class="sparkle"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link bg-highlight" href="#galaxia">
+                        Galáxia
+                        <span class="sparkle"></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+        <div class="star-wars-intro">
+            Uma galáxia muito, muito distante espera por você...
+        </div>
+        <section id="inicio" class="my-5">
+            <h1 class="display-4 text-center text-warning">Bem-vindo ao Universo Star Wars</h1>
+            <p class="text-center text-light">
+                Explore a saga épica de Star Wars, seus personagens icônicos, planetas, naves e toda a magia da Força.
+            </p>
+        </section>
+
+        <section id="personagens" class="my-5">
+            <h2 class="text-center text-warning">Personagens</h2>
+            <div class="row">
+                <!-- Luke Skywalker -->
+                <div class="col-md-4 text-center mb-4">
+                    <div class="personagem-imgs mb-2">
+                        <img src="img/luke-skywalker-jovem.jpeg" alt="Luke Skywalker Jovem" class="expand-img" style="object-position: top center;">
+                        <img src="img/luke-skywalker-velho.jpeg" alt="Luke Skywalker Velho" class="expand-img">
+                    </div>
+                    <h3 class="text-light">Luke Skywalker</h3>
+                    <a class="perfil-link" href="perfil - luke.html" target="_blank">Ver perfil</a>
+                    <p class="text-light mt-2">
+                        O lendário Jedi que enfrentou o Império, buscou o equilíbrio da Força e inspirou gerações. <br>
+                        <span style="color:#ffe81f;">Clique para saber mais sobre sua jornada!</span>
+                    </p>
+                </div>
+                <!-- Darth Vader -->
+                <div class="col-md-4 text-center mb-4">
+                    <div class="personagem-imgs mb-2">
+                        <img src="img/Anakim Skywalker Jovem.jpeg" alt="Anakin Skywalker Jovem" class="expand-img">
+                        <img src="img/Darth Vader.jpeg" alt="Darth Vader" class="expand-img">
+                    </div>
+                    <h3 class="text-light">Darth Vader</h3>
+                    <a class="perfil-link" href="perfil-vader.html" target="_blank">Ver perfil</a>
+                    <p class="text-light mt-2">
+                        De herói a vilão, sua história é marcada por tragédia, poder e redenção. <br>
+                        <span style="color:#ffe81f;">Descubra o lado sombrio e a redenção de Vader!</span>
+                    </p>
+                </div>
+                <!-- Leia Organa -->
+                <div class="col-md-4 text-center mb-4">
+                    <div class="personagem-imgs mb-2">
+                        <img src="img/Princesa Leia Jovem.jpeg" alt="Leia Organa Jovem" class="expand-img">
+                        <img src="img/Princesa Leia Velha.webp" alt="Leia Organa Velha" class="expand-img">
+                    </div>
+                    <h3 class="text-light">Leia Organa</h3>
+                    <a class="perfil-link" href="perfil-leia.html" target="_blank">Ver perfil</a>
+                    <p class="text-light mt-2">
+                        Princesa, general e símbolo de esperança. <br>
+                        <span style="color:#ffe81f;">Veja como Leia mudou a galáxia!</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="filmes" class="my-5">
+            <h2 class="text-center text-warning">Filmes</h2>
+            <div>
+                <div>
+                    <span class="filme-titulo">Episódio I - A Ameaça Fantasma:</span>
+                    <span class="filme-desc">O início da saga, com a descoberta de Anakin Skywalker e o ressurgimento dos Sith.</span>
+                    <a class="btn-filme" href="filme-episodio1.html">Ver página</a>
+                </div>
+                <div>
+                    <span class="filme-titulo">Episódio II - Ataque dos Clones:</span>
+                    <span class="filme-desc">A galáxia mergulha em guerra e Anakin se aproxima do lado sombrio.</span>
+                    <a class="btn-filme" href="filme-episodio2.html">Ver página</a>
+                </div>
+                <div>
+                    <span class="filme-titulo">Episódio III - A Vingança dos Sith:</span>
+                    <span class="filme-desc">A queda dos Jedi e a ascensão de Darth Vader.</span>
+                    <a class="btn-filme" href="filme-episodio3.html">Ver página</a>
+                </div>
+                <div>
+                    <span class="filme-titulo">Episódio IV - Uma Nova Esperança:</span>
+                    <span class="filme-desc">Luke inicia sua jornada e a Aliança Rebelde desafia o Império.</span>
+                    <a class="btn-filme" href="filme-episodio4.html">Ver página</a>
+                </div>
+                <div>
+                    <span class="filme-titulo">Episódio V - O Império Contra-Ataca:</span>
+                    <span class="filme-desc">O Império persegue os rebeldes e Luke enfrenta Vader.</span>
+                    <a class="btn-filme" href="filme-episodio5.html">Ver página</a>
+                </div>
+                <div>
+                    <span class="filme-titulo">Episódio VI - O Retorno de Jedi:</span>
+                    <span class="filme-desc">A redenção de Vader e a queda do Imperador.</span>
+                    <a class="btn-filme" href="filme-episodio6.html">Ver página</a>
+                </div>
+                <div>
+                    <span class="filme-titulo">O Despertar da Força:</span>
+                    <span class="filme-desc">Uma nova geração enfrenta a Primeira Ordem.</span>
+                    <a class="btn-filme" href="filme-episodio7.html">Ver página</a>
+                </div>
+                <div>
+                    <span class="filme-titulo">Os Últimos Jedi:</span>
+                    <span class="filme-desc">Rey busca seu lugar e a Resistência luta pela sobrevivência.</span>
+                    <a class="btn-filme" href="filme-episodio8.html">Ver página</a>
+                </div>
+                <div>
+                    <span class="filme-titulo">A Ascensão Skywalker:</span>
+                    <span class="filme-desc">O confronto final entre luz e trevas.</span>
+                    <a class="btn-filme" href="filme-episodio9.html">Ver página</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="galaxia" class="my-5">
+            <h2 class="text-center text-warning">A Galáxia</h2>
+            <p class="text-center text-light">
+                Descubra planetas como Tatooine, Hoth, Endor, Coruscant e muitos outros.<br>
+                <span style="color:#ffe81f;">Explore naves, espécies, droides e mistérios da Força!</span>
+            </p>
+        </section>
+    </main>
+
+    <footer class="text-center p-3 text-light">
+        <div class="lightsaber"></div>
+        <p>Desenvolvido por Breno Oliveira. Projeto fictício sem fins comerciais.<br>
+        <span style="color:#ffe81f;">Que a Força esteja com você!</span></p>
+    </footer>
+    <!-- Modal para expandir imagens -->
+    <div class="modal-img-bg" id="modal-img-bg">
+        <span class="close-modal" id="close-modal">&times;</span>
+        <img src="" alt="Imagem expandida" id="modal-img">
+    </div>
+    <script>
+        // Animação de estrelas de fundo
+        const canvas = document.getElementById('star-bg');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        function createStars() {
+            stars = [];
+            for (let i = 0; i < 150; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 1.5 + 0.5,
+                    d: Math.random() * 0.5 + 0.2
+                });
+            }
+        }
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.globalAlpha = 0.8;
+            ctx.fillStyle = "#fff";
+            for (let s of stars) {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, 2 * Math.PI);
+                ctx.fill();
+                s.y += s.d;
+                if (s.y > canvas.height) {
+                    s.y = 0;
+                    s.x = Math.random() * canvas.width;
+                }
+            }
+            ctx.restore();
+            requestAnimationFrame(drawStars);
+        }
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            createStars();
+        });
+        resizeCanvas();
+        createStars();
+        drawStars();
+
+        // Expansão de imagens dos personagens
+        document.querySelectorAll('.expand-img').forEach(img => {
+            img.addEventListener('click', function() {
+                document.getElementById('modal-img').src = this.src;
+                document.getElementById('modal-img').alt = this.alt;
+                document.getElementById('modal-img-bg').classList.add('active');
+            });
+        });
+        document.getElementById('close-modal').onclick = function() {
+            document.getElementById('modal-img-bg').classList.remove('active');
+        };
+        document.getElementById('modal-img-bg').onclick = function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        };
+    </script>
+</body>
+</html>
