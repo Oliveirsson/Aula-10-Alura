@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Personagens | Star Wars</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('img/starwars-bg-personagens.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffe81f;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            background: url('img/Star Wars 16 3.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 2rem 0;
+            position: relative;
+        }
+        header::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 1;
+        }
+        header .container {
+            position: relative;
+            z-index: 2;
+        }
+        .nav-img {
+            height: 80px;
+        }
+        .nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            display: inline;
+        }
+        .nav-link.bg-highlight {
+            background: rgba(0,0,0,0.85);
+            border-radius: 8px;
+            padding: 6px 18px;
+            margin: 0 6px;
+            color: #ffe81f !important;
+            font-weight: bold;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            box-shadow: 0 0 8px #ffe81f55;
+            position: relative;
+            overflow: visible;
+        }
+        .nav-link.bg-highlight:hover,
+        .nav-link.bg-highlight:focus {
+            background: #ffe81f;
+            color: #222 !important;
+            box-shadow: 0 0 16px #ffe81f99, 0 0 32px #ffe81f77;
+        }
+        .nav-link.bg-highlight .sparkle {
+            pointer-events: none;
+            position: absolute;
+            left: 50%;
+            top: -16px;
+            width: 8px;
+            height: 16px;
+            opacity: 0;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #ffe81f 0%, #fff 100%);
+            box-shadow: 0 0 12px #ffe81f, 0 0 24px #fff;
+            transform: translateX(-50%) scaleY(0.7);
+            transition: opacity 0.2s;
+            z-index: 10;
+            animation: none;
+        }
+        .nav-link.bg-highlight:hover .sparkle,
+        .nav-link.bg-highlight:focus .sparkle {
+            opacity: 1;
+            animation: sparkle-fall 0.7s linear;
+        }
+        @keyframes sparkle-fall {
+            0% {
+                top: -16px;
+                opacity: 1;
+                transform: translateX(-50%) scaleY(0.7);
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                top: 36px;
+                opacity: 0;
+                transform: translateX(-50%) scaleY(1.2);
+            }
+        }
+        .personagens-container {
+            background: rgba(0,0,0,0.85);
+            border-radius: 16px;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 32px;
+            box-shadow: 0 0 32px #ffe81f55;
+        }
+        h1, h2, h3 {
+            color: #ffe81f;
+        }
+        .personagem-preview-lista {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .personagem-preview {
+            background: rgba(255,232,31,0.08);
+            border-radius: 12px;
+            width: 220px;
+            padding: 18px 12px 12px 12px;
+            text-align: center;
+            box-shadow: 0 0 16px #ffe81f33;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .personagem-preview:hover {
+            transform: scale(1.04) translateY(-4px);
+            box-shadow: 0 0 32px #ffe81f99, 0 0 8px #fff;
+            z-index: 2;
+        }
+        .personagem-preview img {
+            width: 100px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #ffe81f;
+            background: #222c;
+            margin-bottom: 10px;
+            box-shadow: 0 0 12px #ffe81f55;
+        }
+        .personagem-preview h4 {
+            color: #ffe81f;
+            margin-bottom: 6px;
+        }
+        .personagem-preview p {
+            color: #fff;
+            font-size: 0.98em;
+            min-height: 60px;
+        }
+        .btn-perfil {
+            background: #ffe81f;
+            color: #222;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 18px;
+            font-weight: bold;
+            margin-top: 8px;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 8px #ffe81f55;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-perfil:hover {
+            background: #fff;
+            color: #222;
+            box-shadow: 0 0 16px #ffe81f99;
+        }
+        /* Abas */
+        .abas {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        .aba-link {
+            background: rgba(0,0,0,0.85);
+            color: #ffe81f;
+            border-radius: 8px 8px 0 0;
+            padding: 10px 32px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-decoration: none;
+            box-shadow: 0 0 8px #ffe81f33;
+            border: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .aba-link.active, .aba-link:hover {
+            background: #ffe81f;
+            color: #222;
+            box-shadow: 0 0 16px #ffe81f99;
+        }
+        @media (max-width: 700px) {
+            .personagem-preview-lista { gap: 12px; }
+            .personagem-preview { width: 98vw; max-width: 320px; }
+            .abas { flex-direction: column; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container d-flex justify-content-between align-items-center">
+            <img src="img/logo-star-wars.png" class="nav-img" loading="lazy">
+            <div class="abas">
+                <a class="aba-link" href="index.html">Início</a>
+                <a class="aba-link active" href="personagens.html">Personagens</a>
+                <a class="aba-link" href="filmes.html">Filmes</a>
+                <a class="aba-link" href="galaxia.html">Galáxia</a>
+            </div>
+        </nav>
+    </header>
+    <div class="personagens-container">
+        <h1 class="text-center mb-4">Personagens de Star Wars</h1>
+        <p class="text-center mb-5" style="color:#fff;">
+            Explore a galáxia conhecendo os personagens mais marcantes da saga Star Wars.<br>
+            Clique em "Ver perfil" para acessar a ficha completa, história, curiosidades, fotos, filmes e muito mais de cada personagem!
+        </p>
+        <div class="personagem-preview-lista">
+            <!-- Exemplo de personagem, repita para todos -->
+            <div class="personagem-preview">
+                <img src="img/luke-skywalker-jovem.jpeg" alt="Luke Skywalker">
+                <h4>Luke Skywalker</h4>
+                <p>O lendário Jedi que trouxe equilíbrio à Força, enfrentou o Império e inspirou gerações. Sua jornada vai de fazendeiro em Tatooine a mestre Jedi e símbolo de esperança.</p>
+                <a class="btn-perfil" href="perfil-luke.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Darth Vader.jpeg" alt="Darth Vader">
+                <h4>Darth Vader</h4>
+                <p>O mais temido Lorde Sith, antigo Jedi Anakin Skywalker. Sua história é marcada por tragédia, poder, redenção e uma das reviravoltas mais famosas do cinema.</p>
+                <a class="btn-perfil" href="perfil-vader.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Princesa Leia Jovem.jpeg" alt="Leia Organa">
+                <h4>Leia Organa</h4>
+                <p>Princesa, general e símbolo de esperança. Liderou a Aliança Rebelde, lutou pela liberdade e mostrou coragem e compaixão em toda a saga.</p>
+                <a class="btn-perfil" href="perfil-leia.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Han Solo.jpeg" alt="Han Solo">
+                <h4>Han Solo</h4>
+                <p>O carismático contrabandista que virou herói da Rebelião. Piloto da Millennium Falcon, parceiro de Chewbacca e um dos personagens mais amados da saga.</p>
+                <a class="btn-perfil" href="perfil-han.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Yoda.jpeg" alt="Yoda">
+                <h4>Yoda</h4>
+                <p>O mestre Jedi mais sábio e poderoso de todos os tempos. Treinou gerações de Jedi e foi peça-chave na luta contra o lado sombrio.</p>
+                <a class="btn-perfil" href="perfil-yoda.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/C-3PO.jpeg" alt="C-3PO">
+                <h4>C-3PO</h4>
+                <p>Droide de protocolo fluente em mais de seis milhões de formas de comunicação. Companheiro fiel de R2-D2 e presente em toda a saga.</p>
+                <a class="btn-perfil" href="perfil-c3po.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/R2-D2.webp" alt="R2-D2">
+                <h4>R2-D2</h4>
+                <p>Astromecânico corajoso e engenhoso, salvou a galáxia inúmeras vezes. Presente em todos os episódios principais da saga.</p>
+                <a class="btn-perfil" href="perfil-r2d2.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Chewbacca.png" alt="Chewbacca">
+                <h4>Chewbacca</h4>
+                <p>O leal Wookiee de Kashyyyk, copiloto da Millennium Falcon e amigo inseparável de Han Solo. Sua força e coração conquistaram fãs de todas as idades.</p>
+                <a class="btn-perfil" href="perfil-chewbacca.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Lando Calrissian.webp" alt="Lando Calrissian">
+                <h4>Lando Calrissian</h4>
+                <p>Ex-contrabandista, administrador da Cidade das Nuvens e herói da Rebelião. Conhecido por sua lábia, charme e coragem.</p>
+                <a class="btn-perfil" href="perfil-lando.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Padmé Amidala.jpg" alt="Padmé Amidala">
+                <h4>Padmé Amidala</h4>
+                <p>Rainha e depois senadora de Naboo, mãe de Luke e Leia. Uma das figuras políticas mais importantes da galáxia, símbolo de diplomacia e coragem.</p>
+                <a class="btn-perfil" href="perfil-padme.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Qui Gon Jinn .jpg" alt="Qui-Gon Jinn">
+                <h4>Qui-Gon Jinn</h4>
+                <p>Mestre Jedi visionário, mentor de Obi-Wan Kenobi e responsável por descobrir Anakin Skywalker. Defensor da Força Viva.</p>
+                <a class="btn-perfil" href="perfil-quigon.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Obi-Wan Kenobi.jpeg" alt="Obi-Wan Kenobi">
+                <h4>Obi-Wan Kenobi</h4>
+                <p>Um dos maiores Jedi da história, mestre de Anakin e Luke Skywalker. Presenciou a ascensão e queda da República e do Império.</p>
+                <a class="btn-perfil" href="perfil-obiwan.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Darth Maul.jpg" alt="Darth Maul">
+                <h4>Darth Maul</h4>
+                <p>O temido Sith de sabre duplo, aprendiz de Darth Sidious. Sobreviveu à derrota e se tornou lenda entre os vilões da saga.</p>
+                <a class="btn-perfil" href="perfil-maul.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Jar Jar Binks.jpg" alt="Jar Jar Binks">
+                <h4>Jar Jar Binks</h4>
+                <p>Gungan de Naboo, figura cômica e controversa, mas fundamental em momentos decisivos da saga.</p>
+                <a class="btn-perfil" href="perfil-jarjar.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Anakin Skywalker.png" alt="Anakin Skywalker">
+                <h4>Anakin Skywalker</h4>
+                <p>O Escolhido da Força, de escravo em Tatooine a Cavaleiro Jedi e depois Darth Vader. Sua trajetória é o coração da saga.</p>
+                <a class="btn-perfil" href="perfil-anakin.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Mace Windu.webp" alt="Mace Windu">
+                <h4>Mace Windu</h4>
+                <p>Mestre Jedi de sabre roxo, líder do Conselho Jedi e um dos maiores guerreiros da Ordem.</p>
+                <a class="btn-perfil" href="perfil-mace.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Conde Dookan.jpeg" alt="Conde Dookan">
+                <h4>Conde Dookan</h4>
+                <p>Ex-Jedi, tornou-se Lorde Sith como Darth Tyranus. Mestre de Qui-Gon e peça-chave nas Guerras Clônicas.</p>
+                <a class="btn-perfil" href="perfil-dookan.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Jango Fett.jpg" alt="Jango Fett">
+                <h4>Jango Fett</h4>
+                <p>O caçador de recompensas mais temido da galáxia, modelo para o exército de clones da República.</p>
+                <a class="btn-perfil" href="perfil-jango.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/General Grievous.webp" alt="General Grievous">
+                <h4>General Grievous</h4>
+                <p>Comandante supremo dos exércitos separatistas, mestre em combate com sabres de luz e terror dos Jedi.</p>
+                <a class="btn-perfil" href="perfil-grievous.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Senador Palpatine.jpeg" alt="Palpatine / Darth Sidious">
+                <h4>Palpatine / Darth Sidious</h4>
+                <p>O manipulador supremo, responsável pela queda da República e ascensão do Império. O maior vilão da saga.</p>
+                <a class="btn-perfil" href="perfil-palpatine.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Wicket (Ewok).png" alt="Wicket (Ewok)">
+                <h4>Wicket (Ewok)</h4>
+                <p>O Ewok mais famoso de Endor, ajudou os rebeldes a derrotar o Império na Batalha de Endor.</p>
+                <a class="btn-perfil" href="perfil-wicket.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Rey.jpg" alt="Rey">
+                <h4>Rey</h4>
+                <p>Jovem catadora de Jakku, descobre sua ligação com a Força e se torna a última esperança dos Jedi.</p>
+                <a class="btn-perfil" href="perfil-rey.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Finn.jpeg" alt="Finn">
+                <h4>Finn</h4>
+                <p>Ex-stormtrooper da Primeira Ordem, encontra seu próprio caminho e se junta à Resistência.</p>
+                <a class="btn-perfil" href="perfil-finn.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Poe Dameron.webp" alt="Poe Dameron">
+                <h4>Poe Dameron</h4>
+                <p>O melhor piloto da Resistência, corajoso, leal e sempre pronto para a próxima missão.</p>
+                <a class="btn-perfil" href="perfil-poe.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/Kylo Ren.webp" alt="Kylo Ren">
+                <h4>Kylo Ren</h4>
+                <p>Filho de Han e Leia, seduzido pelo lado sombrio. Um dos vilões mais complexos da nova trilogia.</p>
+                <a class="btn-perfil" href="perfil-kylo.html">Ver perfil</a>
+            </div>
+            <div class="personagem-preview">
+                <img src="img/BB-8.jpeg" alt="BB-8">
+                <h4>BB-8</h4>
+                <p>Droide astromecânico leal e carismático, companheiro de Poe Dameron e peça-chave na luta da Resistência.</p>
+                <a class="btn-perfil" href="perfil-bb8.html">Ver perfil</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
